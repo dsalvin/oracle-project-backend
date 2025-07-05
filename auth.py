@@ -31,7 +31,8 @@ oauth.register(
 )
 
 # --- Configuration ---
-SECRET_KEY = "a_very_secret_key_change_this"
+# Read from environment variable with a fallback for local testing
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "a_very_secret_key_change_this") 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

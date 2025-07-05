@@ -29,7 +29,8 @@ app = FastAPI(title="Oracle Sales Forecaster API")
 # --- ADD SESSION MIDDLEWARE ---
 # This must be added for the Google OAuth flow to work.
 # IMPORTANT: Change this secret_key to a long, random string in production.
-app.add_middleware(SessionMiddleware, secret_key="a_very_secret_key_for_sessions")
+SESSION_SECRET_KEY = os.getenv("SESSION_SECRET_KEY", "a_very_secret_key_for_sessions")
+app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY)
 
 
 # --- CORS MIDDLEWARE CONFIGURATION ---
