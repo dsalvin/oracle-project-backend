@@ -1,0 +1,20 @@
+# Python virtual environment
+venv/
+
+# Secret environment variables
+.env
+
+# Local database file
+oracle.db
+oracle.db-journal
+
+# Python caches
+__pycache__/
+*.pyc
+
+# User-uploaded files
+uploads/
+
+# IDE/Editor specific files
+.vscode/
+.idea/
