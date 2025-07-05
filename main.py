@@ -37,6 +37,7 @@ app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY)
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://https://oracle-frontend-chi.vercel.app"
 ]
 
 app.add_middleware(
