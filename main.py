@@ -27,6 +27,7 @@ if not os.path.exists(UPLOAD_DIRECTORY):
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Oracle Sales Forecaster API")
 api_router = APIRouter(prefix="/api")
+app.include_router(api_router)
 
 # --- ADD SESSION MIDDLEWARE ---
 # This must be added for the Google OAuth flow to work.
