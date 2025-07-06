@@ -26,7 +26,7 @@ if not os.path.exists(UPLOAD_DIRECTORY):
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Oracle Sales Forecaster API")
-
+api_router = APIRouter(prefix="/api")
 
 # --- CORS MIDDLEWARE CONFIGURATION ---
 origins = [
@@ -177,7 +177,7 @@ def export_forecast_csv(
 
 
 # --- Auth Endpoints ---
-@app.post("/register", response_model=schemas.User)
+@api_router.post("/register", response_model=schemas.User)
 def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if db_user:
@@ -196,7 +196,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-@app.post("/token", response_model=schemas.Token)
+@api_router.post("/token", response_model=schemas.Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == form_data.username).first()
     if not user or not auth.verify_password(form_data.password, user.hashed_password):
@@ -288,3 +288,5 @@ def get_forecast(product_id: str, filename: str, current_user: models.User = Dep
 @app.get("/")
 def read_root():
     return {"status": "ok"}
+
+app.include_router(api_router)
