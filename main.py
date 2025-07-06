@@ -26,14 +26,6 @@ if not os.path.exists(UPLOAD_DIRECTORY):
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Oracle Sales Forecaster API")
-api_router = APIRouter(prefix="/api")
-app.include_router(api_router)
-
-# --- ADD SESSION MIDDLEWARE ---
-# This must be added for the Google OAuth flow to work.
-# IMPORTANT: Change this secret_key to a long, random string in production.
-SESSION_SECRET_KEY = os.getenv("SESSION_SECRET_KEY", "a_very_secret_key_for_sessions")
-app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY)
 
 
 # --- CORS MIDDLEWARE CONFIGURATION ---
@@ -50,6 +42,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- ADD SESSION MIDDLEWARE ---
+# This must be added for the Google OAuth flow to work.
+# IMPORTANT: Change this secret_key to a long, random string in production.
+SESSION_SECRET_KEY = os.getenv("SESSION_SECRET_KEY", "a_very_secret_key_for_sessions")
+app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY)
 
 
 # --- Helper Function for Insight Generation (RESTORED) ---
