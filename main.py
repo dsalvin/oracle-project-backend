@@ -9,6 +9,7 @@ from starlette.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import StreamingResponse
 import io 
+from fastapi import APIRouter
 
 import auth
 import models
@@ -24,7 +25,8 @@ if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
 
 models.Base.metadata.create_all(bind=engine)
-app = FastAPI(title="Oracle Sales Forecaster API",  root_path="/api")
+app = FastAPI(title="Oracle Sales Forecaster API")
+api_router = APIRouter(prefix="/api")
 
 # --- ADD SESSION MIDDLEWARE ---
 # This must be added for the Google OAuth flow to work.
@@ -283,3 +285,7 @@ def get_forecast(product_id: str, filename: str, current_user: models.User = Dep
         # Include yhat_lower and yhat_upper in the forecast data
         "forecast_data": forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(30).to_dict(orient='records')
     }
+
+@app.get("/")
+def read_root():
+    return {"status": "ok"}
